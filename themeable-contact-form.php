@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name:     Themeable Contact Form
- * Plugin URI:      https://rexrana.ca
+ * Plugin URI:      https://github.com/rexrana/themeable-contact-form
  * Description:     A simple contact form plugin that allows you to customize the template to match your theme
  * Author:          Rex Rana Design and Development Ltd.
  * Author URI:      https://rexrana.ca
@@ -27,7 +27,6 @@ $pages = array(
 	'themeable-contact-form'    => array(
 		'page_title'    => __( 'Themeable Contact Form', 'themeable-contact-form' ),
 		'menu_title' => __( 'Contact Form', 'themeable-contact-form' ),
-		// 'icon_url' => 'dashicons-email',
 		'parent_slug' => 'options-general.php',
 		'sections'      => array(
 			'email' => array(

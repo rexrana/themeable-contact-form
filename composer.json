@@ -1,18 +1,19 @@
 {
     "name": "rexrana/themeable-contact-form",
-    "description": "A simple contact form plugin that allows you to customize the template to match your theme",
+    "description": "A simple contact form plugin for WordPress that allows you to customize the template to match your theme",
     "keywords": ["wordpress", "plugin", "contact form", "contact", "form", "bootstrap", "foundation"],
     "type": "wordpress-plugin",
     "license": "GPL-2.0+",
     "authors": [
       {
         "name": "Rex Rana Design and Development Ltd.",
-        "email": "peter@rexrana.ca",
         "homepage": "https://rexrana.ca"
       },
-      {
-        "name": "Peter Hebert",
-        "email": "peter@peterhebert.com"
+      { 
+        "name": "Peter Hebert", 
+        "email": "peter@rexrana.ca",
+        "homepage": "https://peterhebert.com/",
+        "role": "Developer"
       }
     ],
     "require": {

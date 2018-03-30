@@ -1,20 +1,14 @@
 {
   "name": "themeable-contact-form",
+  "description": "A simple contact form plugin for WordPress that allows you to customize the template to match your theme",
   "version": "0.1.0",
-  "main": "Gruntfile.js",
   "author": "Rex Rana Design and Development",
-  "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-wp-i18n": "~0.5.0",
-    "grunt-wp-readme-to-markdown": "~1.0.0"
-  },
-  "description": "=== Themeable Contact Form === Contributors: peterhebert Donate link: https://example.com/ Tags: forms, spam Requires at least: 4.4 Tested up to: 4.9.4 Stable tag: 0.1.0 License: GPLv2 or later License URI: https://www.gnu.org/licenses/gpl-2.0.html",
-  "directories": {
-    "test": "tests"
-  },
-  "scripts": {
-    "test": "./vendor/bin/phpunit"
-  },
+  "contributors": [
+    {
+      "name": "Peter Hebert",
+      "email": "peter@rexrana.ca"
+    }
+  ],
   "keywords": [
     "wordpress",
     "plugin",
@@ -24,5 +18,21 @@
     "bootstrap",
     "foundation"
   ],
-  "license": "GPL-2.0+"
+  "license": "GPL-2.0+",
+  "main": "Gruntfile.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rexrana/themeable-contact-form.git"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-wp-i18n": "~0.5.0",
+    "grunt-wp-readme-to-markdown": "~1.0.0"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "./vendor/bin/phpunit"
+  }
 }
