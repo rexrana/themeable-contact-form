@@ -23,7 +23,9 @@
       "wixel/gump": "^1.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.5"
+        "phpunit/phpunit": "^6.5",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+        "wp-coding-standards/wpcs": "^0.14.1"
     },
     "autoload": {
       "psr-4": {
