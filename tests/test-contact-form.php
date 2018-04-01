@@ -12,7 +12,7 @@ class ContactFormTest extends WP_UnitTestCase
 
         $this->class_instance = new ContactForm();
 
-    }
+   }
 
 	/**
 	 * Call protected/private method of a class.
@@ -30,6 +30,23 @@ class ContactFormTest extends WP_UnitTestCase
 	    $method->setAccessible(true);
 
 	    return $method->invokeArgs($object, $parameters);
+	}
+
+	/**
+ 	 * getPrivateProperty
+ 	 *
+ 	 * @author	Joe Sexton <joe@webtipblog.com>
+ 	 * @param 	string $className
+	  * @param 	string $propertyName
+ 	 * @return	ReflectionProperty
+ 	 */
+	public function getPrivateProperty( &$object, $propertyName ) {
+
+		$reflection = new \ReflectionClass(get_class($object));
+		$property = $reflection->getProperty( $propertyName );
+		$property->setAccessible( true );
+
+		return $property;
 	}
 
     public function test_verify_nonce()
@@ -144,7 +161,6 @@ class ContactFormTest extends WP_UnitTestCase
 
 	}
 
-
 	public function test_process_contact_form_invalid_email()
 	{
 		// no email address, should return errors
@@ -167,6 +183,91 @@ class ContactFormTest extends WP_UnitTestCase
 
 		$this->assertTrue( $find_error_email_invalid );
 
+	}
+
+	public function test_process_contact_form_trip_honeypot()
+	{
+		// the 'firstname' honeypot field is filled in, process should fail
+		$_POST = array(
+			'tcf_contact_name'    => 'John Smith',
+			'tcf_contact_email'   => 'jsmith@domain.net',
+			'tcf_contact_message' => '',
+			'firstname' => 'John',
+			'lastname' => '',
+		);
+		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce('contact_form');
+
+		$processed = $this->invokeMethod($this->class_instance, 'process_contact_form');
+
+		$this->assertEquals( 0, $processed );
+
+		// the 'lastname' honeypot field is filled in, process should fail
+		$_POST = array(
+			'tcf_contact_name'    => 'John Smith',
+			'tcf_contact_email'   => 'jsmith@domain.net',
+			'tcf_contact_message' => '',
+			'firstname' => '',
+			'lastname' => 'Smith',
+		);
+		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce('contact_form');
+
+		$processed = $this->invokeMethod($this->class_instance, 'process_contact_form');
+
+		$this->assertEquals( 0, $processed );
+
+	}
+
+	public function test_process_contact_form_invalid_nonce()
+	{
+	
+		// create a dummy nonce that should fail
+		$_REQUEST['tcf_contact_nonce'] = 'skjfhkwu983dee';
+
+		// the 'firstname' honeypot field is filled in, process should fail
+		$_POST = array(
+			'tcf_contact_name'    => 'John Smith',
+			'tcf_contact_email'   => 'jsmith@domain.net',
+			'tcf_contact_message' => 'my message',
+			'firstname' => '',
+			'lastname' => '',
+		);
+
+		$processed = $this->invokeMethod($this->class_instance, 'process_contact_form');
+
+		$this->assertEquals( 0, $processed );
+
+    }
+
+	public function test_send_email_should_pass()
+	{
+
+		$from = $this->getPrivateProperty($this->class_instance, 'email_from' );
+		$from->setValue($this->class_instance, 'peter@peterhebert.com');
+
+		$cc = $this->getPrivateProperty($this->class_instance, 'email_cc' );
+		$cc->setValue($this->class_instance, 'hebert.pj@gmail.com');
+
+		$bcc = $this->getPrivateProperty($this->class_instance, 'email_bcc' );
+		$bcc->setValue($this->class_instance, 'peter@rexrana.ca');
+
+		$data = $this->getPrivateProperty($this->class_instance, 'sanitized_data' );
+		$data->setValue($this->class_instance, array(
+			'tcf_contact_name'    => 'John Smith',
+			'tcf_contact_email'   => 'jsmith@domain.net',
+			'tcf_contact_message' => 'my message',
+		));
+
+		$sent = $this->invokeMethod($this->class_instance, 'send_email');
+		$this->assertTrue( $sent );
+
+	}
+
+	public function test_display_message()
+	{
+		$message = 'There was an error in sending the email';
+		$displayed = $this->invokeMethod($this->class_instance, 'display_message', array($message) );
+
+		
 	}
 
 

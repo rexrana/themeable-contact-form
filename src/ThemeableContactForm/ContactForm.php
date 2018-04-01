@@ -13,10 +13,10 @@ class ContactForm {
 	protected $sanitized_data;
 	protected $errors;
 
-	protected $email_from;
 	protected $email_to;
-	protected $email_cc;
-	protected $email_bcc;
+	public $email_from;
+	public $email_cc;
+	public $email_bcc;
 
 	public function __construct()
 	{
@@ -75,9 +75,6 @@ class ContactForm {
 		else
 		{
 			$this->errors = $validated;
-			// echo '<pre>';
-			// var_dump($validated);
-			// echo '</pre>';
 
 			return 2;
 		}
