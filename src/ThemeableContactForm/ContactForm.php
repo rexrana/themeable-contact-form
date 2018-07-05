@@ -23,11 +23,25 @@ class ContactForm {
 
 		add_shortcode( 'themeable_contact_form', array( $this, 'form_shortcode' ) );
 
+		$db_email_from = get_option('email_from');
+		$db_email_to = get_option('email_to');
+		$db_fromname = get_option('from_name')
+
+		if(!$db_from_name) {
+			$db_from_name = get_option( 'blogname' );
+		}
+		if(!$db_email_from) {
+			$db_email_from = get_option( 'admin_email' );
+		}
+		if(!$db_email_to) {
+			$db_email_to = get_option( 'admin_email' );
+		}
+
 		$this->form_data = array();
-		$this->email_from = sprintf( __('%1$s <%2$s>', 'themeable-contact-form'), get_option( 'blogname' ), get_option( 'admin_email' ) );
+		$this->email_from = sprintf( __('%1$s <%2$s>', 'themeable-contact-form'), $db_from_name, $db_email_from );
 		$this->email_cc = '';
 		$this->email_bcc = '';
-		$this->email_to = 'peter@rexrana.ca';
+		$this->email_to = $db_email_to;
 
 		$this->template_loader = new TemplateLoader();
 	}
