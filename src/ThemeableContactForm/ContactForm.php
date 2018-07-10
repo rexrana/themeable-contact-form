@@ -14,34 +14,31 @@ class ContactForm {
 	protected $errors;
 
 	protected $email_to;
-	public $email_from;
-	public $email_cc;
-	public $email_bcc;
+	protected $email_from;
+	protected $email_cc;
+	protected $email_bcc;
 
 	public function __construct()
 	{
 
 		add_shortcode( 'themeable_contact_form', array( $this, 'form_shortcode' ) );
 
-		$db_email_from = get_option('email_from');
-		$db_email_to = get_option('email_to');
-		$db_fromname = get_option('from_name')
-
-		if(!$db_from_name) {
-			$db_from_name = get_option( 'blogname' );
-		}
-		if(!$db_email_from) {
-			$db_email_from = get_option( 'admin_email' );
-		}
-		if(!$db_email_to) {
-			$db_email_to = get_option( 'admin_email' );
-		}
-
 		$this->form_data = array();
-		$this->email_from = sprintf( __('%1$s <%2$s>', 'themeable-contact-form'), $db_from_name, $db_email_from );
+		
+		if( get_option('from_name') && get_option('email_from') ) {
+			$this->email_from = sprintf( __('%1$s <%2$s>', 'themeable-contact-form'), get_option('from_name'), get_option('email_from') );
+		} else {
+			$this->email_from = sprintf( __('%1$s <%2$s>', 'themeable-contact-form'), get_option('blogname'), get_option('admin_email') );
+		}
+
 		$this->email_cc = '';
 		$this->email_bcc = '';
-		$this->email_to = $db_email_to;
+
+		if( get_option('email_to') ) {
+			$this->email_to = get_option('email_to');
+		} else {
+			$this->email_to = get_option('admin_email');
+		}
 
 		$this->template_loader = new TemplateLoader();
 	}
@@ -123,10 +120,14 @@ class ContactForm {
 
 	public function display_message( $message )
 	{
-
-		$this->template_loader->set_template_data( array('message' => $message), 'data' );
-		$this->template_loader->get_template_part( 'contact-message' );
-
+		if ( $this->is_cli() ) {
+			echo "\n";
+			print_r($message);
+			
+		} else {
+			$this->template_loader->set_template_data( array('message' => $message), 'data' );
+			$this->template_loader->get_template_part( 'contact-message' );
+		}
 	}
 
 	// Add Shortcode
@@ -153,7 +154,7 @@ class ContactForm {
 
 					if($sent) {
 
-						$message = __('Your message has been received. Thank you', 'themeable-contact-form');
+						$message = __('Your message has been sent successfully. Thank you', 'themeable-contact-form');
 					}
 					else
 					{
@@ -251,6 +252,22 @@ class ContactForm {
 	public function return_errors()
 	{
 		return $this->errors;
+	}
+
+
+	function is_cli()
+	{
+		if( defined('STDIN') )
+		{
+			return true;
+		}
+		
+		if( empty($_SERVER['REMOTE_ADDR']) and !isset($_SERVER['HTTP_USER_AGENT']) and count($_SERVER['argv']) > 0) 
+		{
+			return true;
+		} 
+		
+		return false;
 	}
 
 }
