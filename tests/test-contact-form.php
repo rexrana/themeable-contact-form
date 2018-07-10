@@ -264,10 +264,11 @@ class ContactFormTest extends WP_UnitTestCase
 
 	public function test_display_message()
 	{
-		$message = 'There was an error in sending the email';
-		$displayed = $this->invokeMethod($this->class_instance, 'display_message', array($message) );
+		$message = 'This is a test of displaying a message';
+		$this->invokeMethod($this->class_instance, 'display_message', array($message) );
 
-		
+		$this->expectOutputString("\n{$message}");
+
 	}
 
 
