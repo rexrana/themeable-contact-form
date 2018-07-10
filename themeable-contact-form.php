@@ -75,10 +75,10 @@ $pages = array(
 $option_page = new RationalOptionPages( $pages );
 
 
-function themeable_contact_form_activate(){
-    register_uninstall_hook( __FILE__, 'themeable_contact_form_uninstall' );
+function tcf_activate(){
+    register_uninstall_hook( __FILE__, 'tcf_uninstall' );
 }
-register_activation_hook( __FILE__, 'themeable_contact_form_activate' );
+register_activation_hook( __FILE__, 'tcf_activate' );
 
 // allow writing to WordPress debug log
 if (!function_exists('write_log')) {
@@ -92,3 +92,13 @@ if (!function_exists('write_log')) {
         }
     }
 }
+
+
+// define the wp_mail_failed callback 
+function tcf_action_wp_mail_failed($wp_error) 
+{
+    return error_log(print_r($wp_error, true));
+}
+          
+// add the action 
+add_action('wp_mail_failed', 'tcf_action_wp_mail_failed', 10, 1);
