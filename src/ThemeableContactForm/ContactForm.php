@@ -112,7 +112,7 @@ class ContactForm {
 		$this->email_bcc = '';
 
 		if ( is_array( $this->options ) && array_key_exists( 'send_emails_to', $this->options ) && '' !== $this->options['send_emails_to'] ) {
-			$this->email_to = $this->options['email_to'];
+			$this->email_to = $this->options['send_emails_to'];
 		} else {
 			$this->email_to = get_option( 'admin_email' );
 		}
