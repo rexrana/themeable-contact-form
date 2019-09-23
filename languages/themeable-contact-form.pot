@@ -1,15 +1,15 @@
-# Copyright (C) 2018 Rex Rana Design and Development Ltd.
+# Copyright (C) 2019 Rex Rana Design and Development Ltd.
 # This file is distributed under the same license as the Themeable Contact Form package.
 msgid ""
 msgstr ""
-"Project-Id-Version: Themeable Contact Form 0.1.0\n"
+"Project-Id-Version: Themeable Contact Form 0.2.0\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/themeable-contact-form\n"
-"POT-Creation-Date: 2018-03-30 15:45:52+00:00\n"
+"POT-Creation-Date: 2019-09-23 21:31:26+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2018-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2019-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: grunt-wp-i18n 0.5.4\n"
@@ -25,61 +25,68 @@ msgstr ""
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
 
-#: src/ThemeableContactForm/ContactForm.php:27
+#: src/ThemeableContactForm/ContactForm.php:105
+#: src/ThemeableContactForm/ContactForm.php:108
+#. translators: 1. name 2. email address
 msgid "%1$s <%2$s>"
 msgstr ""
 
-#: src/ThemeableContactForm/ContactForm.php:145
-msgid "Your message has been received. Thank you"
+#: src/ThemeableContactForm/ContactForm.php:240
+msgid "Your message has been sent successfully. Thank you"
 msgstr ""
 
-#: src/ThemeableContactForm/ContactForm.php:157
+#: src/ThemeableContactForm/ContactForm.php:249
 msgid "There was an error in sending the email. Please try again later"
 msgstr ""
 
-#: src/ThemeableContactForm/ContactForm.php:168
+#: src/ThemeableContactForm/ContactForm.php:260
 #: templates/contact-form-bootstrap.php:20
 #: templates/contact-form-foundation.php:18 templates/contact-form.php:41
 msgid "Name"
 msgstr ""
 
-#: src/ThemeableContactForm/ContactForm.php:169
+#: src/ThemeableContactForm/ContactForm.php:261
 #: templates/contact-form-bootstrap.php:26
 #: templates/contact-form-foundation.php:25 templates/contact-form.php:46
 msgid "Email"
 msgstr ""
 
-#: src/ThemeableContactForm/ContactForm.php:170
+#: src/ThemeableContactForm/ContactForm.php:262
 #: templates/contact-form-bootstrap.php:32
 #: templates/contact-form-foundation.php:32 templates/contact-form.php:51
 msgid "Message"
 msgstr ""
 
-#: src/ThemeableContactForm/ContactForm.php:174
+#: src/ThemeableContactForm/ContactForm.php:267
+#. translators: required field name
 msgid "<em>%s</em> is required"
 msgstr ""
 
-#: src/ThemeableContactForm/ContactForm.php:175
+#: src/ThemeableContactForm/ContactForm.php:269
+#. translators: Email
 msgid "<em>%s</em> must be a valid email address"
 msgstr ""
 
-#: src/ThemeableContactForm/ContactForm.php:176
+#: src/ThemeableContactForm/ContactForm.php:271
+#. translators: Name
 msgid "<em>%s</em> must be a valid name"
 msgstr ""
 
-#: src/ThemeableContactForm/ContactForm.php:185
+#: src/ThemeableContactForm/ContactForm.php:280
 msgid "Your submission has the following errors:"
 msgstr ""
 
-#: src/ThemeableContactForm/ContactForm.php:228
+#: src/ThemeableContactForm/ContactForm.php:320
+#. translators: Name
 msgid "Contact Form email from: %s"
 msgstr ""
 
-#: src/ThemeableContactForm/ContactForm.php:230
+#: src/ThemeableContactForm/ContactForm.php:322
+#. translators: 1. Name 2. Email address
 msgid "from: %1$s <%2$s>"
 msgstr ""
 
-#: src/ThemeableContactForm/ContactForm.php:231
+#: src/ThemeableContactForm/ContactForm.php:323
 msgid "message:"
 msgstr ""
 
@@ -111,56 +118,56 @@ msgstr ""
 msgid "Contact Form"
 msgstr ""
 
-#: themeable-contact-form.php:34
+#: themeable-contact-form.php:33
 msgid "Email Settings"
 msgstr ""
 
-#: themeable-contact-form.php:37
+#: themeable-contact-form.php:36
 msgid "From Name"
 msgstr ""
 
-#: themeable-contact-form.php:43
+#: themeable-contact-form.php:42
 msgid "From address"
 msgstr ""
 
-#: themeable-contact-form.php:45
+#: themeable-contact-form.php:44
 msgid ""
 "Address that will be used in the email From header. This should be an email "
 "address at your site's domain to avoid spam filters"
 msgstr ""
 
-#: themeable-contact-form.php:49
+#: themeable-contact-form.php:48
 msgid "Send Emails To"
 msgstr ""
 
-#: themeable-contact-form.php:57
+#: themeable-contact-form.php:56
 msgid "Template"
 msgstr ""
 
-#: themeable-contact-form.php:58
+#: themeable-contact-form.php:57
 msgid ""
 "Template used to display the form. You can also override the default "
 "template in your theme."
 msgstr ""
 
-#: themeable-contact-form.php:61
+#: themeable-contact-form.php:60
 msgid "Form Template"
 msgstr ""
 
-#: themeable-contact-form.php:65
+#: themeable-contact-form.php:64
 msgid "Default (no styles)"
 msgstr ""
 
-#: themeable-contact-form.php:66
+#: themeable-contact-form.php:65
 msgid "Bootstrap"
 msgstr ""
 
-#: themeable-contact-form.php:67
+#: themeable-contact-form.php:66
 msgid "Foundation"
 msgstr ""
 
-#. Author URI of the plugin/theme
-msgid "https://rexrana.ca"
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/rexrana/themeable-contact-form"
 msgstr ""
 
 #. Description of the plugin/theme
@@ -171,4 +178,8 @@ msgstr ""
 
 #. Author of the plugin/theme
 msgid "Rex Rana Design and Development Ltd."
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://rexrana.ca"
 msgstr ""
