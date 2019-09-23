@@ -94,11 +94,11 @@ if (!function_exists('write_log')) {
 }
 
 
-// define the wp_mail_failed callback 
-function tcf_action_wp_mail_failed($wp_error) 
+// define the wp_mail_failed callback
+function tcf_action_wp_mail_failed($wp_error)
 {
     return error_log(print_r($wp_error, true));
 }
-          
-// add the action 
+
+// add the action
 add_action('wp_mail_failed', 'tcf_action_wp_mail_failed', 10, 1);

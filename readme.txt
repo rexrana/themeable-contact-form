@@ -3,7 +3,7 @@ Contributors: peterhebert
 Tags: contact form, contact, form, bootstrap, foundation
 Requires at least: 4.4
 Tested up to: 4.9.4
-Stable tag: 0.1.0
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,9 @@ In addition to these templates, you can override the form display with custom ma
 == Screenshots ==
 
 == Changelog ==
+
+= 0.2.0 =
+Properly retrieve saved plugin options.
 
 = 0.1 =
 Initial plugin release.
