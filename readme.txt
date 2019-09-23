@@ -54,7 +54,7 @@ In addition to these templates, you can override the form display with custom ma
 
 == Changelog ==
 
-= 0.2.1 =
+= 0.3.0 =
 Properly retrieve saved plugin options for send email to.
 
 = 0.2.0 =
