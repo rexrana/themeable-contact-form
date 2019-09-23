@@ -111,8 +111,8 @@ class ContactForm {
 		$this->email_cc  = '';
 		$this->email_bcc = '';
 
-		if ( get_option( 'email_to' ) ) {
-			$this->email_to = get_option( 'email_to' );
+		if ( is_array( $this->options ) && array_key_exists( 'send_emails_to', $this->options ) && '' !== $this->options['send_emails_to'] ) {
+			$this->email_to = $this->options['email_to'];
 		} else {
 			$this->email_to = get_option( 'admin_email' );
 		}
