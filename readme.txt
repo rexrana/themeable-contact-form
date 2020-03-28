@@ -2,8 +2,8 @@
 Contributors: peterhebert
 Tags: contact form, contact, form, bootstrap, foundation
 Requires at least: 4.4
-Tested up to: 4.9.4
-Stable tag: 0.2.1
+Tested up to: 5.3.2
+Stable tag: 0.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -46,6 +46,7 @@ In addition to these templates, you can override the form display with custom ma
 1. Extract the plugin .zip and upload folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. Go to 'Settings > Contact Form' in the WordPress admin to customize your email and template settings.
+4. Insert shortcode `[themeable_contact_form]` in your contact page to place form.
 
 == Frequently Asked Questions ==
 
@@ -53,6 +54,9 @@ In addition to these templates, you can override the form display with custom ma
 == Screenshots ==
 
 == Changelog ==
+
+= 0.3.1 =
+Updated composer dependencies, installation instructions.
 
 = 0.3.0 =
 Properly retrieve saved plugin options for send email to.
