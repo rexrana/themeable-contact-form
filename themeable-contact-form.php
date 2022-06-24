@@ -7,7 +7,7 @@
  * Author URI:      https://rexrana.ca
  * Text Domain:     themeable-contact-form
  * Domain Path:     /languages
- * Version:         0.3.1
+ * Version:         0.3.2
  *
  * @package         Themeable_Contact_Form
  */
