@@ -1,29 +1,29 @@
-# Copyright (C) 2020 Rex Rana Design and Development Ltd.
+# Copyright (C) 2022 Rex Rana Design and Development Ltd.
 # This file is distributed under the same license as the Themeable Contact Form package.
 msgid ""
 msgstr ""
 "Project-Id-Version: Themeable Contact Form 0.3.1\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/themeable-contact-form\n"
-"POT-Creation-Date: 2020-09-30 15:21:56+00:00\n"
+"POT-Creation-Date: 2022-06-24 19:37:36+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2020-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2022-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
-"X-Generator: grunt-wp-i18n 0.5.4\n"
-"X-Poedit-KeywordsList: "
-"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
-"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-Country: United States\n"
 "X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: "
+"__;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_"
+"attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c;\n"
 "X-Poedit-Basepath: ../\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-Bookmarks: \n"
 "X-Textdomain-Support: yes\n"
+"X-Generator: grunt-wp-i18n 1.0.3\n"
 
 #: src/ThemeableContactForm/ContactForm.php:105
 #: src/ThemeableContactForm/ContactForm.php:108
@@ -88,6 +88,18 @@ msgstr ""
 
 #: src/ThemeableContactForm/ContactForm.php:323
 msgid "message:"
+msgstr ""
+
+#: src/dependencies/RationalOptionPages.php:713
+msgid "Field parameter \"title\" is required"
+msgstr ""
+
+#: src/dependencies/RationalOptionPages.php:808
+msgid "Page parameter \"page_title\" is required"
+msgstr ""
+
+#: src/dependencies/RationalOptionPages.php:870
+msgid "Section parameter \"title\" is required"
 msgstr ""
 
 #: templates/contact-form-bootstrap.php:22

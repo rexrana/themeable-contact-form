@@ -1,5 +1,5 @@
 # Themeable Contact Form #
-**Contributors:** peterhebert  
+**Contributors:** [peterhebert](https://profiles.wordpress.org/peterhebert/)  
 **Tags:** contact form, contact, form, bootstrap, foundation  
 **Requires at least:** 4.4  
 **Tested up to:** 5.5.1  

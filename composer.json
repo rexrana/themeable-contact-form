@@ -9,8 +9,8 @@
         "name": "Rex Rana Design and Development Ltd.",
         "homepage": "https://rexrana.ca"
       },
-      { 
-        "name": "Peter Hebert", 
+      {
+        "name": "Peter Hebert",
         "email": "peter@rexrana.ca",
         "homepage": "https://peterhebert.com/",
         "role": "Developer"
@@ -23,9 +23,9 @@
       "wixel/gump": "^1.5"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.5",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
-        "wp-coding-standards/wpcs": "^0.14.1"
+        "phpunit/phpunit": "^9.3",
+        "wp-coding-standards/wpcs": "^2.3",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2"
     },
     "autoload": {
       "psr-4": {
@@ -37,6 +37,11 @@
         "psr-4": {
           "RexRana\\ThemeableContactForm\\Tests\\": ["tests/"]
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
-
 }
