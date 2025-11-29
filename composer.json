@@ -6,12 +6,8 @@
     "license": "GPL-2.0+",
     "authors": [
       {
-        "name": "Rex Rana Design and Development Ltd.",
-        "homepage": "https://rexrana.ca"
-      },
-      {
         "name": "Peter Hebert",
-        "email": "peter@rexrana.ca",
+        "email": "peter@peterhebert.com",
         "homepage": "https://peterhebert.com/",
         "role": "Developer"
       }
@@ -24,13 +20,13 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.3",
-        "wp-coding-standards/wpcs": "^2.3",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2"
+        "wp-coding-standards/wpcs": "^3.3",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.2",
+        "yoast/phpunit-polyfills": "^4.0"
     },
     "autoload": {
       "psr-4": {
-        "RexRana\\ThemeableContactForm\\": ["src/ThemeableContactForm"],
-        "dependencies\\": ["src/dependencies/"]
+        "RexRana\\ThemeableContactForm\\": ["src/ThemeableContactForm"]
       }
     },
     "autoload-dev": {

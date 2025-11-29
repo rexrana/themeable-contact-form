@@ -33,6 +33,8 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "./vendor/bin/phpunit"
+    "test": "./vendor/bin/phpunit",
+    "test:php": "wp-env run tests-wordpress phpunit 'phpunit -c /var/www/html/wp-content/plugins/$(basename \"$PWD\")/phpunit.xml.dist --verbose'",
+    "wp-env": "wp-env"
   }
 }

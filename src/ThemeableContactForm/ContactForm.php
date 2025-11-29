@@ -237,19 +237,20 @@ class ContactForm {
 					$sent = $this->send_email();
 
 					if ( $sent ) {
-						$message = __( 'Your message has been sent successfully. Thank you', 'themeable-contact-form' );
-					} else {
-						$log_message  = "error sending email from contact form\n";
-						$log_message .= 'date: ' . date( DATE_ATOM ) . "\n";
-						$log_message .= "from: {$this->sanitized_data['tcf_contact_name']} <{$this->sanitized_data['tcf_contact_email']}>\n";
-						$log_message .= "message: {$this->sanitized_data['tcf_contact_email']}\n";
+					$message = __( 'Your message has been sent successfully. Thank you', 'themeable-contact-form' );
+				} else {
+					$log_message  = "error sending email from contact form\n";
+					$log_message .= 'date: ' . gmdate( DATE_ATOM ) . "\n";
+					$log_message .= "from: {$this->sanitized_data['tcf_contact_name']} <{$this->sanitized_data['tcf_contact_email']}>\n";
+					$log_message .= "message: {$this->sanitized_data['tcf_contact_email']}\n";
 
-						write_log( $log_message );
-
-						$message = __( 'There was an error in sending the email. Please try again later', 'themeable-contact-form' );
+					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+						// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+						error_log( $log_message );
 					}
 
-					$this->display_message( $message );
+					$message = __( 'There was an error in sending the email. Please try again later', 'themeable-contact-form' );
+				}					$this->display_message( $message );
 					exit();
 
 					break;

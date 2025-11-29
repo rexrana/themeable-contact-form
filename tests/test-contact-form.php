@@ -1,289 +1,343 @@
 <?php
-use \RexRana\ThemeableContactForm\ContactForm;
+/**
+ * Contact Form Test Class
+ *
+ * @package Themeable_Contact_Form
+ */
 
-class ContactFormTest extends WP_UnitTestCase
-{
-    public function setUp()
-    {
-        parent::setUp();
+use RexRana\ThemeableContactForm\ContactForm;
 
-		$_POST = array();
+/**
+ * Test case for ContactForm class.
+ */
+class ContactFormTest extends WP_UnitTestCase {
+
+	/**
+	 * Instance of ContactForm class.
+	 *
+	 * @var ContactForm
+	 */
+	protected $class_instance;
+
+	/**
+	 * Set up test fixtures.
+	 *
+	 * @return void
+	 */
+	public function set_up() {
+		parent::set_up();
+
+		$_POST    = array();
 		$_REQUEST = array();
 
-        $this->class_instance = new ContactForm();
-
-   }
+		$this->class_instance = new ContactForm();
+	}
 
 	/**
 	 * Call protected/private method of a class.
 	 *
-	 * @param object &$object    Instantiated object that we will run method on.
-	 * @param string $methodName Method name to call
+	 * @param object $object     Instantiated object that we will run method on.
+	 * @param string $method_name Method name to call.
 	 * @param array  $parameters Array of parameters to pass into method.
 	 *
 	 * @return mixed Method return.
 	 */
-	public function invokeMethod(&$object, $methodName, array $parameters = array())
-	{
-	    $reflection = new \ReflectionClass(get_class($object));
-	    $method = $reflection->getMethod($methodName);
-	    $method->setAccessible(true);
+	public function invoke_method( &$object, $method_name, array $parameters = array() ) {
+		$reflection = new \ReflectionClass( get_class( $object ) );
+		$method     = $reflection->getMethod( $method_name );
+		$method->setAccessible( true );
 
-	    return $method->invokeArgs($object, $parameters);
+		return $method->invokeArgs( $object, $parameters );
 	}
 
 	/**
- 	 * getPrivateProperty
- 	 *
- 	 * @author	Joe Sexton <joe@webtipblog.com>
- 	 * @param 	string $className
-	  * @param 	string $propertyName
- 	 * @return	ReflectionProperty
- 	 */
-	public function getPrivateProperty( &$object, $propertyName ) {
-
-		$reflection = new \ReflectionClass(get_class($object));
-		$property = $reflection->getProperty( $propertyName );
+	 * Get private property.
+	 *
+	 * @param object $object        Object instance.
+	 * @param string $property_name Property name.
+	 * @return ReflectionProperty
+	 */
+	public function get_private_property( &$object, $property_name ) {
+		$reflection = new \ReflectionClass( get_class( $object ) );
+		$property   = $reflection->getProperty( $property_name );
 		$property->setAccessible( true );
 
 		return $property;
 	}
 
-    public function test_verify_nonce()
-    {
+	/**
+	 * Test verify_nonce method.
+	 *
+	 * @return void
+	 */
+	public function test_verify_nonce() {
+		// Create a nonce with the same action our production code uses.
+		$tcf_contact_nonce = wp_create_nonce( 'contact_form' );
 
-		// create a nonce with the same action our production code uses
-		$tcf_contact_nonce = wp_create_nonce('contact_form');
-
-		// create a dummy nonce that should fail
+		// Create a dummy nonce that should fail.
 		$dummy_nonce = 'skjfhkwuee';
 
-		// vars to test
-		// $shouldbetrue = $this->class_instance->verify_nonce($tcf_contact_nonce, 'contact_form');
-		$shouldbetrue = $this->invokeMethod($this->class_instance, 'verify_nonce', [$tcf_contact_nonce, 'contact_form']);
+		// Test valid nonce.
+		$shouldbetrue = $this->invoke_method( $this->class_instance, 'verify_nonce', array( $tcf_contact_nonce, 'contact_form' ) );
 
-
-		// $shouldbefalse = $this->class_instance->verify_nonce($dummy_nonce, 'contact_form');
-		$shouldbefalse = $this->invokeMethod($this->class_instance, 'verify_nonce', [$dummy_nonce, 'contact_form']);
+		// Test invalid nonce.
+		$shouldbefalse = $this->invoke_method( $this->class_instance, 'verify_nonce', array( $dummy_nonce, 'contact_form' ) );
 
 		$this->assertTrue( $shouldbetrue );
 		$this->assertFalse( $shouldbefalse );
+	}
 
-    }
-
-	public function test_process_contact_form_should_pass()
-	{
-
-		$_POST = array(
+	/**
+	 * Test process_contact_form method with valid data.
+	 *
+	 * @return void
+	 */
+	public function test_process_contact_form_should_pass() {
+		$_POST                         = array(
 			'tcf_contact_name'    => 'John Smith',
 			'tcf_contact_email'   => 'jsmith@domain.net',
 			'tcf_contact_message' => 'This is my message',
-			'firstname' => '',
-			'lastname' => '',
+			'firstname'           => '',
+			'lastname'            => '',
 		);
-		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce('contact_form');
+		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce( 'contact_form' );
 
-		$processed = $this->invokeMethod($this->class_instance, 'process_contact_form');
+		$processed = $this->invoke_method( $this->class_instance, 'process_contact_form' );
 
 		$this->assertEquals( 1, $processed );
-
 	}
 
-	public function test_process_contact_form_no_email()
-	{
-		// no email address, should return errors
-		$_POST = array(
+	/**
+	 * Test process_contact_form method with no email.
+	 *
+	 * @return void
+	 */
+	public function test_process_contact_form_no_email() {
+		// No email address, should return errors.
+		$_POST                         = array(
 			'tcf_contact_name'    => 'John Smith',
 			'tcf_contact_email'   => '',
 			'tcf_contact_message' => 'This is my message',
-			'firstname' => '',
-			'lastname' => '',
+			'firstname'           => '',
+			'lastname'            => '',
 		);
-		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce('contact_form');
+		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce( 'contact_form' );
 
-		$processed = $this->invokeMethod($this->class_instance, 'process_contact_form');
+		$processed = $this->invoke_method( $this->class_instance, 'process_contact_form' );
 
 		$this->assertEquals( 2, $processed );
 
-		// test error messages
-		$errors = $this->class_instance->return_errors();
-		$find_error = $this->find_error_message($errors, 'tcf_contact_email', 'validate_required');
+		// Test error messages.
+		$errors     = $this->class_instance->return_errors();
+		$find_error = $this->find_error_message( $errors, 'tcf_contact_email', 'required' );
 
 		$this->assertTrue( $find_error );
-
 	}
 
-	public function test_process_contact_form_no_name()
-	{
-		// no email address, should return errors
-		$_POST = array(
+	/**
+	 * Test process_contact_form method with no name.
+	 *
+	 * @return void
+	 */
+	public function test_process_contact_form_no_name() {
+		// No name, should return errors.
+		$_POST                         = array(
 			'tcf_contact_name'    => '',
 			'tcf_contact_email'   => 'jsmith@domain.net',
 			'tcf_contact_message' => 'This is my message',
-			'firstname' => '',
-			'lastname' => '',
+			'firstname'           => '',
+			'lastname'            => '',
 		);
-		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce('contact_form');
+		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce( 'contact_form' );
 
-		$processed = $this->invokeMethod($this->class_instance, 'process_contact_form');
+		$processed = $this->invoke_method( $this->class_instance, 'process_contact_form' );
 
 		$this->assertEquals( 2, $processed );
 
-		// test error messages
-		$errors = $this->class_instance->return_errors();
-		$find_error = $this->find_error_message($errors, 'tcf_contact_name', 'validate_required');
+		// Test error messages.
+		$errors     = $this->class_instance->return_errors();
+		$find_error = $this->find_error_message( $errors, 'tcf_contact_name', 'required' );
 
 		$this->assertTrue( $find_error );
-
 	}
 
-	public function test_process_contact_form_no_message()
-	{
-		// no email address, should return errors
-		$_POST = array(
+	/**
+	 * Test process_contact_form method with no message.
+	 *
+	 * @return void
+	 */
+	public function test_process_contact_form_no_message() {
+		// No message, should return errors.
+		$_POST                         = array(
 			'tcf_contact_name'    => 'John Smith',
 			'tcf_contact_email'   => 'jsmith@domain.net',
 			'tcf_contact_message' => '',
-			'firstname' => '',
-			'lastname' => '',
+			'firstname'           => '',
+			'lastname'            => '',
 		);
-		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce('contact_form');
+		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce( 'contact_form' );
 
-		$processed = $this->invokeMethod($this->class_instance, 'process_contact_form');
+		$processed = $this->invoke_method( $this->class_instance, 'process_contact_form' );
 
 		$this->assertEquals( 2, $processed );
 
-		// test error messages
-		$errors = $this->class_instance->return_errors();
-		$find_error = $this->find_error_message($errors, 'tcf_contact_message', 'validate_required');
+		// Test error messages.
+		$errors     = $this->class_instance->return_errors();
+		$find_error = $this->find_error_message( $errors, 'tcf_contact_message', 'required' );
 
 		$this->assertTrue( $find_error );
-
 	}
 
-	public function test_process_contact_form_invalid_email()
-	{
-		// no email address, should return errors
-		$_POST = array(
+	/**
+	 * Test process_contact_form method with invalid email.
+	 *
+	 * @return void
+	 */
+	public function test_process_contact_form_invalid_email() {
+		// Invalid email address, should return errors.
+		$_POST                         = array(
 			'tcf_contact_name'    => 'John Smith',
 			'tcf_contact_email'   => 'ssdf',
 			'tcf_contact_message' => 'This is my message',
-			'firstname' => '',
-			'lastname' => '',
+			'firstname'           => '',
+			'lastname'            => '',
 		);
-		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce('contact_form');
+		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce( 'contact_form' );
 
-		$processed = $this->invokeMethod($this->class_instance, 'process_contact_form');
+		$processed = $this->invoke_method( $this->class_instance, 'process_contact_form' );
 
 		$this->assertEquals( 2, $processed );
 
-		// test error messages
-		$errors = $this->class_instance->return_errors();
-		$find_error_email_invalid = $this->find_error_message($errors, 'tcf_contact_email', 'validate_valid_email');
+		// Test error messages.
+		$errors                   = $this->class_instance->return_errors();
+		$find_error_email_invalid = $this->find_error_message( $errors, 'tcf_contact_email', 'valid_email' );
 
 		$this->assertTrue( $find_error_email_invalid );
-
 	}
 
-	public function test_process_contact_form_trip_honeypot()
-	{
-		// the 'firstname' honeypot field is filled in, process should fail
-		$_POST = array(
+	/**
+	 * Test process_contact_form method when honeypot is triggered.
+	 *
+	 * @return void
+	 */
+	public function test_process_contact_form_trip_honeypot() {
+		// The 'firstname' honeypot field is filled in, process should fail.
+		$_POST                         = array(
 			'tcf_contact_name'    => 'John Smith',
 			'tcf_contact_email'   => 'jsmith@domain.net',
 			'tcf_contact_message' => '',
-			'firstname' => 'John',
-			'lastname' => '',
+			'firstname'           => 'John',
+			'lastname'            => '',
 		);
-		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce('contact_form');
+		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce( 'contact_form' );
 
-		$processed = $this->invokeMethod($this->class_instance, 'process_contact_form');
+		$processed = $this->invoke_method( $this->class_instance, 'process_contact_form' );
 
 		$this->assertEquals( 0, $processed );
 
-		// the 'lastname' honeypot field is filled in, process should fail
-		$_POST = array(
+		// The 'lastname' honeypot field is filled in, process should fail.
+		$_POST                         = array(
 			'tcf_contact_name'    => 'John Smith',
 			'tcf_contact_email'   => 'jsmith@domain.net',
 			'tcf_contact_message' => '',
-			'firstname' => '',
-			'lastname' => 'Smith',
+			'firstname'           => '',
+			'lastname'            => 'Smith',
 		);
-		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce('contact_form');
+		$_REQUEST['tcf_contact_nonce'] = wp_create_nonce( 'contact_form' );
 
-		$processed = $this->invokeMethod($this->class_instance, 'process_contact_form');
+		$processed = $this->invoke_method( $this->class_instance, 'process_contact_form' );
 
 		$this->assertEquals( 0, $processed );
-
 	}
 
-	public function test_process_contact_form_invalid_nonce()
-	{
-	
-		// create a dummy nonce that should fail
+	/**
+	 * Test process_contact_form method with invalid nonce.
+	 *
+	 * @return void
+	 */
+	public function test_process_contact_form_invalid_nonce() {
+		// Create a dummy nonce that should fail.
 		$_REQUEST['tcf_contact_nonce'] = 'skjfhkwu983dee';
 
-		// the 'firstname' honeypot field is filled in, process should fail
+		// Invalid nonce, process should fail.
 		$_POST = array(
 			'tcf_contact_name'    => 'John Smith',
 			'tcf_contact_email'   => 'jsmith@domain.net',
 			'tcf_contact_message' => 'my message',
-			'firstname' => '',
-			'lastname' => '',
+			'firstname'           => '',
+			'lastname'            => '',
 		);
 
-		$processed = $this->invokeMethod($this->class_instance, 'process_contact_form');
+		$processed = $this->invoke_method( $this->class_instance, 'process_contact_form' );
 
 		$this->assertEquals( 0, $processed );
+	}
 
-    }
+	/**
+	 * Test send_email method.
+	 *
+	 * @return void
+	 */
+	public function test_send_email_should_pass() {
+		$from = $this->get_private_property( $this->class_instance, 'email_from' );
+		$from->setValue( $this->class_instance, 'peter@peterhebert.com' );
 
-	public function test_send_email_should_pass()
-	{
+		$cc = $this->get_private_property( $this->class_instance, 'email_cc' );
+		$cc->setValue( $this->class_instance, 'hebert.pj@gmail.com' );
 
-		$from = $this->getPrivateProperty($this->class_instance, 'email_from' );
-		$from->setValue($this->class_instance, 'peter@peterhebert.com');
+		$bcc = $this->get_private_property( $this->class_instance, 'email_bcc' );
+		$bcc->setValue( $this->class_instance, 'peter@rexrana.ca' );
 
-		$cc = $this->getPrivateProperty($this->class_instance, 'email_cc' );
-		$cc->setValue($this->class_instance, 'hebert.pj@gmail.com');
+		$data = $this->get_private_property( $this->class_instance, 'sanitized_data' );
+		$data->setValue(
+			$this->class_instance,
+			array(
+				'tcf_contact_name'    => 'John Smith',
+				'tcf_contact_email'   => 'jsmith@domain.net',
+				'tcf_contact_message' => 'my message',
+			)
+		);
 
-		$bcc = $this->getPrivateProperty($this->class_instance, 'email_bcc' );
-		$bcc->setValue($this->class_instance, 'peter@rexrana.ca');
-
-		$data = $this->getPrivateProperty($this->class_instance, 'sanitized_data' );
-		$data->setValue($this->class_instance, array(
-			'tcf_contact_name'    => 'John Smith',
-			'tcf_contact_email'   => 'jsmith@domain.net',
-			'tcf_contact_message' => 'my message',
-		));
-
-		$sent = $this->invokeMethod($this->class_instance, 'send_email');
+		$sent = $this->invoke_method( $this->class_instance, 'send_email' );
 		$this->assertTrue( $sent );
-
 	}
 
-	public function test_display_message()
-	{
+	/**
+	 * Test display_message method.
+	 *
+	 * @return void
+	 */
+	public function test_display_message() {
 		$message = 'This is a test of displaying a message';
-		$this->invokeMethod($this->class_instance, 'display_message', array($message) );
+		$this->invoke_method( $this->class_instance, 'display_message', array( $message ) );
 
-		$this->expectOutputString("\n{$message}");
-
+		$this->expectOutputString( "\n{$message}" );
 	}
 
+	/**
+	 * Find error message in errors array.
+	 *
+	 * @param array  $errors    Array of error messages.
+	 * @param string $fieldname Field name to search for.
+	 * @param string $rule      Rule to search for.
+	 * @return bool True if error found, false otherwise.
+	 */
+	public function find_error_message( $errors, $fieldname, $rule ) {
+		// Handle if errors is not an array.
+		if ( ! is_array( $errors ) ) {
+			return false;
+		}
 
-	public function find_error_message($errors, $fieldname, $rule)
-	{
-		foreach ($errors as $err) {
-
-			if ($err['field'] == $fieldname && $err['rule'] == $rule) {
-				return true;
+		foreach ( $errors as $err ) {
+			// Handle different error formats.
+			if ( is_array( $err ) ) {
+				if ( isset( $err['field'] ) && isset( $err['rule'] ) &&
+					$err['field'] === $fieldname && $err['rule'] === $rule ) {
+					return true;
+				}
 			}
-
 		}
 		return false;
 	}
-
-
-
 }
+

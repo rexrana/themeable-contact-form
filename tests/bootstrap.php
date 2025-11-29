@@ -12,6 +12,7 @@ if ( ! $_tests_dir ) {
 }
 
 if ( ! file_exists( $_tests_dir . '/includes/functions.php' ) ) {
+	// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
 	throw new Exception( "Could not find $_tests_dir/includes/functions.php, have you run bin/install-wp-tests.sh ?" );
 }
 
@@ -22,7 +23,7 @@ require_once $_tests_dir . '/includes/functions.php';
  * Manually load the plugin being tested.
  */
 function _manually_load_plugin() {
-	require dirname( dirname( __FILE__ ) ) . '/themeable-contact-form.php';
+	require dirname( __DIR__ ) . '/themeable-contact-form.php';
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 

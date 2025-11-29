@@ -3,6 +3,7 @@
 .editorconfig
 .git
 .gitignore
+.gitattributes
 .gitlab-ci.yml
 .travis.yml
 .DS_Store
@@ -22,6 +23,7 @@ multisite.xml
 multisite.xml.dist
 phpcs.xml
 phpcs.xml.dist
+.phpcs.xml.dist
 README.md
 wp-cli.local.yml
 yarn.lock
@@ -31,3 +33,22 @@ coverage
 *.sql
 *.tar.gz
 *.zip
+
+# Exclude dev dependencies from vendor but keep production dependencies
+/vendor/phpunit/
+/vendor/wp-coding-standards/
+/vendor/dealerdirect/
+/vendor/squizlabs/
+/vendor/bin/phpunit
+/vendor/bin/phpcs
+/vendor/bin/phpcbf
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Build scripts
+build.sh
+Makefile
