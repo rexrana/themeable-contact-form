@@ -35,6 +35,8 @@
   "scripts": {
     "test": "./vendor/bin/phpunit",
     "test:php": "wp-env run tests-wordpress phpunit 'phpunit -c /var/www/html/wp-content/plugins/$(basename \"$PWD\")/phpunit.xml.dist --verbose'",
-    "wp-env": "wp-env"
+    "wp-env": "wp-env",
+    "i18n": "grunt i18n",
+    "readme": "grunt readme"
   }
 }

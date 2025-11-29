@@ -2,8 +2,8 @@
 Contributors: peterhebert
 Tags: contact form, contact, form, bootstrap, foundation
 Requires at least: 4.4
-Tested up to: 5.5.1
-Stable tag: 0.3.3
+Tested up to: 6.8.3
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,6 +54,11 @@ In addition to these templates, you can override the form display with custom ma
 == Screenshots ==
 
 == Changelog ==
+
+= 1.0.0 =
+First stable release.
+Removed dependency on RationalOptionsForm class
+better conformity with WordPress coding standards.
 
 = 0.3.3 =
 Updated composer and node dependencies.
