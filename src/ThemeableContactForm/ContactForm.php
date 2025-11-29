@@ -8,8 +8,8 @@
 
 namespace RexRana\ThemeableContactForm;
 
-use \RexRana\ThemeableContactForm\TemplateLoader;
-use \GUMP;
+use RexRana\ThemeableContactForm\TemplateLoader;
+use GUMP;
 
 /**
  * Simple Contact Form class
@@ -129,7 +129,12 @@ class ContactForm {
 
 		$gump = new GUMP();
 
-		$_POST = $gump->sanitize( $_POST ); // You don't have to sanitize, but it's safest to do so.
+		// Nonce verification is handled here.
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		$post_data = wp_unslash( $_POST );
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
+
+		$post_data = $gump->sanitize( $post_data );
 
 		// 'firstname' and 'lastname' are the honeypot fields.
 		$rules = array(
@@ -146,15 +151,22 @@ class ContactForm {
 			'tcf_contact_message' => 'trim|sanitize_string',
 		);
 
-		$validated   = $gump->validate( $_POST, $rules );
-		$nonce_valid = $this->verify_nonce( $_REQUEST['tcf_contact_nonce'], 'contact_form' );
+		$validated = $gump->validate( $post_data, $rules );
 
-		if ( false === $nonce_valid || 0 < strlen( $_POST['firstname'] ) || 0 < strlen( $_POST['lastname'] ) ) {
-			// bots.
+		// Verify nonce.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$nonce       = isset( $_REQUEST['tcf_contact_nonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['tcf_contact_nonce'] ) ) : '';
+		$nonce_valid = $this->verify_nonce( $nonce, 'contact_form' );
+
+		$firstname = isset( $post_data['firstname'] ) ? $post_data['firstname'] : '';
+		$lastname  = isset( $post_data['lastname'] ) ? $post_data['lastname'] : '';
+
+		if ( false === $nonce_valid || 0 < strlen( $firstname ) || 0 < strlen( $lastname ) ) {
+			// Bots.
 			return 0;
 		} elseif ( true === $validated && true === $nonce_valid ) {
-			// now sanitize data for use.
-			$this->sanitized_data = $gump->filter( $_POST, $filters );
+			// Now sanitize data for use.
+			$this->sanitized_data = $gump->filter( $post_data, $filters );
 
 			return 1;
 		} else {
@@ -205,6 +217,7 @@ class ContactForm {
 	public function display_message( $message ) {
 		if ( $this->is_cli() ) {
 			echo "\n";
+			// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_print_r
 			print_r( $message );
 		} else {
 			$this->template_loader->set_template_data( array( 'message' => $message ), 'data' );
@@ -223,39 +236,40 @@ class ContactForm {
 
 		$this->form_data['my_url'] = home_url( add_query_arg( array(), $wp->request ) );
 
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		if ( ! empty( $_POST ) ) {
+			// phpcs:enable WordPress.Security.NonceVerification.Missing
 			$process_status = $this->process_contact_form();
 
 			switch ( $process_status ) {
 				case 0:
-					// bots, fail silently.
+					// Bots, fail silently.
 					exit();
-					break;
 				case 1:
-					// success, email and then return success message.
+					// Success, email and then return success message.
 
 					$sent = $this->send_email();
 
 					if ( $sent ) {
-					$message = __( 'Your message has been sent successfully. Thank you', 'themeable-contact-form' );
-				} else {
-					$log_message  = "error sending email from contact form\n";
-					$log_message .= 'date: ' . gmdate( DATE_ATOM ) . "\n";
-					$log_message .= "from: {$this->sanitized_data['tcf_contact_name']} <{$this->sanitized_data['tcf_contact_email']}>\n";
-					$log_message .= "message: {$this->sanitized_data['tcf_contact_email']}\n";
+						$message = __( 'Your message has been sent successfully. Thank you', 'themeable-contact-form' );
+					} else {
+						$log_message  = "error sending email from contact form\n";
+						$log_message .= 'date: ' . gmdate( DATE_ATOM ) . "\n";
+						$log_message .= "from: {$this->sanitized_data['tcf_contact_name']} <{$this->sanitized_data['tcf_contact_email']}>\n";
+						$log_message .= "message: {$this->sanitized_data['tcf_contact_email']}\n";
 
-					if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
-						// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
-						error_log( $log_message );
+						if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+							// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+							error_log( $log_message );
+						}
+
+						$message = __( 'There was an error in sending the email. Please try again later', 'themeable-contact-form' );
 					}
 
-					$message = __( 'There was an error in sending the email. Please try again later', 'themeable-contact-form' );
-				}					$this->display_message( $message );
+					$this->display_message( $message );
 					exit();
-
-					break;
 				case 2:
-					// validation errors, prepare error messages and display form.
+					// Validation errors, prepare error messages and display form.
 
 					$field_names = array(
 						'tcf_contact_name'    => __( 'Name', 'themeable-contact-form' ),
@@ -281,10 +295,12 @@ class ContactForm {
 					$msg  = __( 'Your submission has the following errors:', 'themeable-contact-form' ) . "<br />\n";
 					$msg .= implode( "<br />\n", $messages );
 
+					// phpcs:disable WordPress.Security.NonceVerification.Missing
 					$this->form_data['errors']  = $msg;
-					$this->form_data['name']    = $_POST['tcf_contact_name'];
-					$this->form_data['email']   = $_POST['tcf_contact_email'];
-					$this->form_data['message'] = $_POST['tcf_contact_message'];
+					$this->form_data['name']    = isset( $_POST['tcf_contact_name'] ) ? sanitize_text_field( wp_unslash( $_POST['tcf_contact_name'] ) ) : '';
+					$this->form_data['email']   = isset( $_POST['tcf_contact_email'] ) ? sanitize_email( wp_unslash( $_POST['tcf_contact_email'] ) ) : '';
+					$this->form_data['message'] = isset( $_POST['tcf_contact_message'] ) ? sanitize_textarea_field( wp_unslash( $_POST['tcf_contact_message'] ) ) : '';
+					// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 					$this->display_contact_form();
 

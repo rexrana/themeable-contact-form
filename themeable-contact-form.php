@@ -7,13 +7,14 @@
  * Author URI:      https://peterhebert.com
  * Text Domain:     themeable-contact-form
  * Domain Path:     /languages
- * Version:         0.3.3
+ * Version:         1.0.0
+ * Tested Up To:    6.8.3
  *
  * @package         Themeable_Contact_Form
  */
 
 define( 'TCF_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'TCF_PLUGIN_VERSION', '0.3.3' );
+define( 'TCF_PLUGIN_VERSION', '1.0.0' );
 
 // Composer autoloader.
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
